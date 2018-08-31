@@ -27,6 +27,8 @@ _1st_arguments=(
     'search:Search for packages and display associated information.'
     'update:Updates conda packages to the latest compatible version.'
     'upgrade:Alias for conda update.'
+    'activate:Activate given environment.'
+    'deactivate:Deactivate current environment.'
 )
 
 
@@ -44,4 +46,8 @@ case "$words[1]" in
             _conda_env_list
             _wanted env_list expl 'environments' compadd -a env_list
         fi;;
+    activate)
+        _conda_env_list
+        _wanted env_list expl 'environments' compadd -a env_list
+        ;;
 esac
