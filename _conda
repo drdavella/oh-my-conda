@@ -1,0 +1,51 @@
+#compdef conda
+#autoload
+
+
+local -a _conda_env_dir
+_conda_env_dir="$(dirname $(which conda))/../envs"
+
+
+_conda_env_list() {
+    env_list=($(ls $_conda_env_dir | xargs -n 1))
+}
+
+
+_arguments \
+  '(-h --help)'{-h,--help}'[Show this help message and exit]' \
+  '(-V --version)'{-V,--version}'[Show the conda version number and exit]' \
+  '*:: :->subcmds' && return 0
+
+local -a _1st_arguments
+_1st_arguments=(
+    'clean:Remove unused packages and caches.'
+    'config:Modify configuration values in .condarc.'
+    'create:Create a new conda environment from a list of specified packages.'
+    'help:Displays a list of available conda commands and their help strings.'
+    'info:Display information about current conda install.'
+    'install:Installs a list of packages into a specified conda environment.'
+    'list:List linked packages in a conda environment.'
+    'package:Low-level conda package utility. (EXPERIMENTAL)'
+    'remove:Remove a list of packages from a specified conda environment.'
+    'uninstall:Alias for conda remove.'
+    'search:Search for packages and display associated information.'
+    'update:Updates conda packages to the latest compatible version.'
+    'upgrade:Alias for conda update.'
+)
+
+
+if (( CURRENT == 1 )); then
+  _describe -t commands "conda subcommand" _1st_arguments
+  return
+fi
+
+
+case "$words[1]" in
+    install)
+        _arguments \
+            '(-n --name)'{-n,--name}'[Name of environment]: :->env_list'
+        if [[ "$state" == "env_list" ]]; then
+            _conda_env_list
+            _wanted env_list expl 'environments' compadd -a env_list
+        fi;;
+esac
