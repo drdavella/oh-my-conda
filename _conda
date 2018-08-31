@@ -2,12 +2,8 @@
 #autoload
 
 
-local -a _conda_env_dir
-_conda_env_dir="$(dirname $(which conda))/../envs"
-
-
 _conda_env_list() {
-    env_list=($(ls $_conda_env_dir | xargs -n 1))
+    env_list=($(ls "$_CONDA_ROOT/envs" | xargs -n 1))
 }
 
 
